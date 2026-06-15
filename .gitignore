@@ -1,0 +1,18 @@
+# Folder budowania (najważniejsze!)
+build/
+
+# Pliki konfiguracyjne VS Code (opcjonalnie, zależy czy pracujesz sam)
+.vscode/
+
+# Pliki binarne i wykonywalne (bez rozszerzeń w Linux/macOS)
+*.out
+*.app
+
+# Pliki tymczasowe CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Logi i inne
+*.log
