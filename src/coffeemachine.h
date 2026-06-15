@@ -3,19 +3,21 @@
 
 #include <string>
 
-class CoffeeMachine {
+#include "icoffeemachine.h"
+
+class CoffeeMachine : public ICoffeeMachine {
  public:
   CoffeeMachine();
   ~CoffeeMachine();
 
-  bool MakeCoffee();
-  void RefillWater();
-  void RefillBeans();
+  bool MakeCoffee() override;
+  void RefillWater() override;
+  void RefillBeans() override;
 
-  std::string getStatus() const;
+  std::string getStatus() const override;
 
-  int GetWater() const { return *CurrentWater; }
-  int GetBeans() const { return *CurrentBeans; }
+  int GetWater() const override { return *CurrentWater; }
+  int GetBeans() const override { return *CurrentBeans; }
 
  private:
   const int MAX_WATER = 1000;

@@ -1,18 +1,17 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <string>
-
-#include "coffeemachine.h"
+#include "icoffeemachine.h"
 
 class Console {
  public:
-  Console();
+  explicit Console(ICoffeeMachine* machine);
   ~Console();
   void run();
+  void ProcessChoice(int choice);
 
  private:
-  CoffeeMachine machine;
+  ICoffeeMachine* machine_;
   void PrintOptions() const;
 };
 

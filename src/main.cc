@@ -1,7 +1,9 @@
+#include "coffeemachine.h"
 #include "console.h"
 
 int main() {
-  Console console;
+  CoffeeMachine machine;
+  Console console(&machine);
   console.run();
   return 0;
 }
