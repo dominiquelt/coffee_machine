@@ -3,21 +3,26 @@
 #include <string>
 
 CoffeeMachine::CoffeeMachine()
-    : CurrentWater(MAX_WATER), CurrentBeans(MAX_BEANS) {}
+    : CurrentWater(MAX_WATER), CurrentBeans(MAX_BEANS), CurrentMilk(MAX_MILK) {}
 
 CoffeeMachine::~CoffeeMachine() {}
 
+void CoffeeMachine::SetStrategy(std::unique_ptr<IBrewingStrategy> strategy) {
+  strategy_ = std::move(strategy);
+}
+
 bool CoffeeMachine::MakeCoffee() {
-  if (CurrentWater < WATER_PER_COFFEE || CurrentBeans < BEANS_PER_COFFEE) {
+  if (!strategy_) {
     return false;
   }
-  CurrentWater -= WATER_PER_COFFEE;
-  CurrentBeans -= BEANS_PER_COFFEE;
-  return true;
+  return strategy_->brew(CurrentWater, CurrentBeans, CurrentMilk);
 }
 
 void CoffeeMachine::RefillWater() {
   CurrentWater = MAX_WATER;
+}
+void CoffeeMachine::RefillMilk() {
+  CurrentMilk = MAX_MILK;
 }
 
 void CoffeeMachine::RefillBeans() {
@@ -26,5 +31,6 @@ void CoffeeMachine::RefillBeans() {
 
 std::string CoffeeMachine::getStatus() const {
   return "Water: " + std::to_string(CurrentWater) + " ml\n" +
-         "Beans: " + std::to_string(CurrentBeans) + " g";
+         "Beans: " + std::to_string(CurrentBeans) + " g\n" +
+         "Milk: " + std::to_string(CurrentMilk) + "ml";
 }

@@ -23,6 +23,9 @@ add_library(GameLib
     src/coffeemachine.cc
     src/console.cc
     src/ConsoleInput.cc
+    src/EspressoStrategy.cc
+    src/FilteredCoffeeStrategy.cc
+    src/MilkCoffeeStrategy.cc
 )
 
 target_include_directories(GameLib PUBLIC src)

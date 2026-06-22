@@ -1,6 +1,11 @@
 #include "console.h"
 
 #include <iostream>
+#include <memory>
+
+#include "EspressoStrategy.h"
+#include "FilteredCoffeeStrategy.h"
+#include "MilkCoffeeStrategy.h"
 
 Console::Console(ICoffeeMachine* machine, IInput* input)
     : machine_(machine), input_(input) {}
@@ -15,14 +20,37 @@ void Console::PrintOptions() const {
             << "Wybor: ";
 }
 
+void Console::SelectCoffee() {
+  std::cout << "\n[1] Espresso\n"
+            << "[2] Filtered Coffee\n"
+            << "[3] Milk Coffee\n"
+            << "Wybor: ";
+  int choice = input_->getChoice();
+  switch (choice) {
+    case 1:
+      machine_->SetStrategy(std::make_unique<Espresso>());
+      break;
+    case 2:
+      machine_->SetStrategy(std::make_unique<Filtered>());
+      break;
+    case 3:
+      machine_->SetStrategy(std::make_unique<MilkCoffee>());
+      break;
+    default:
+      std::cout << "Nieznana opcja.\n";
+      return;
+  }
+  if (machine_->MakeCoffee()) {
+    std::cout << "Kawa gotowa!\n";
+  } else {
+    std::cout << "Blad: Za malo zasobow!\n";
+  }
+}
+
 void Console::ProcessChoice(int choice) {
   switch (choice) {
     case 1:
-      if (machine_->MakeCoffee()) {
-        std::cout << "Kawa gotowa!\n";
-      } else {
-        std::cout << "Blad: Za malo wody lub ziaren!\n";
-      }
+      SelectCoffee();
       break;
     case 2:
       std::cout << machine_->getStatus() << "\n";

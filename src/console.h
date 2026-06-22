@@ -12,6 +12,7 @@ class Console {
 
  private:
   void ProcessChoice(int choice);
+  void SelectCoffee();
   ICoffeeMachine* machine_;
   IInput* input_;
   void PrintOptions() const;

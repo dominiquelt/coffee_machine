@@ -10,9 +10,15 @@ class CoffeeMachineMock : public ICoffeeMachine {
   MOCK_METHOD(bool, MakeCoffee, (), (override));
   MOCK_METHOD(void, RefillWater, (), (override));
   MOCK_METHOD(void, RefillBeans, (), (override));
+  MOCK_METHOD(void, RefillMilk, (), (override));
   MOCK_METHOD(std::string, getStatus, (), (const, override));
   MOCK_METHOD(int, GetWater, (), (const, override));
   MOCK_METHOD(int, GetBeans, (), (const, override));
+  MOCK_METHOD(int, GetMilk, (), (const, override));
+  MOCK_METHOD(void,
+              SetStrategy,
+              (std::unique_ptr<IBrewingStrategy>),
+              (override));
 };
 
 class InputMock : public IInput {
