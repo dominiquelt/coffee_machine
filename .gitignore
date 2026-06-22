@@ -6,7 +6,7 @@ build/
 
 # Pliki binarne i wykonywalne (bez rozszerzeń w Linux/macOS)
 *.out
-*.app
+*.app 
 
 # Pliki tymczasowe CMake
 CMakeCache.txt

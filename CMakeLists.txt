@@ -22,6 +22,7 @@ FetchContent_MakeAvailable(googletest)
 add_library(GameLib
     src/coffeemachine.cc
     src/console.cc
+    src/ConsoleInput.cc
 )
 
 target_include_directories(GameLib PUBLIC src)

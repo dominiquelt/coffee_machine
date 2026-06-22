@@ -16,8 +16,8 @@ class CoffeeMachine : public ICoffeeMachine {
 
   std::string getStatus() const override;
 
-  int GetWater() const override { return *CurrentWater; }
-  int GetBeans() const override { return *CurrentBeans; }
+  int GetWater() const override { return CurrentWater; }
+  int GetBeans() const override { return CurrentBeans; }
 
  private:
   const int MAX_WATER = 1000;
@@ -25,8 +25,12 @@ class CoffeeMachine : public ICoffeeMachine {
   const int WATER_PER_COFFEE = 200;
   const int BEANS_PER_COFFEE = 15;
 
-  int* CurrentWater;
-  int* CurrentBeans;
+  int CurrentWater;
+  int CurrentBeans;
 };
 
 #endif
+
+// crt water -crt beans nie jako wskazniki tylko normalna kopia, bo int jest tak
+// samo duzy w pamieci jak wskaznik
+// bedziemy rozbijac ta klase i tak

@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-Console::Console(ICoffeeMachine* machine) : machine_(machine) {}
+Console::Console(ICoffeeMachine* machine, IInput* input)
+    : machine_(machine), input_(input) {}
 Console::~Console() {}
 
 void Console::PrintOptions() const {
@@ -44,11 +45,15 @@ void Console::ProcessChoice(int choice) {
 }
 
 void Console::run() {
-  int choice;
-  while (true) {
-    PrintOptions();
-    std::cin >> choice;
+  int choice = -1;
+
+  while (choice != 0) {
+    choice = input_->getChoice();
     ProcessChoice(choice);
-    if (choice == 0) return;
   }
 }
+
+// tworzysz mala klase do mockowania, ktora zawola metoda ktora zawola std::cin
+// linia 58 std::cin choice i zwroci choice process choice bedzie prywatne w
+// testach do konsoli uzywam tylko run, ale dla obiektoru ktory zwroci choice
+// napisac moca

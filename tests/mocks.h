@@ -2,6 +2,7 @@
 
 #include <gmock/gmock.h>
 
+#include "IInput.h"
 #include "icoffeemachine.h"
 
 class CoffeeMachineMock : public ICoffeeMachine {
@@ -12,4 +13,9 @@ class CoffeeMachineMock : public ICoffeeMachine {
   MOCK_METHOD(std::string, getStatus, (), (const, override));
   MOCK_METHOD(int, GetWater, (), (const, override));
   MOCK_METHOD(int, GetBeans, (), (const, override));
+};
+
+class InputMock : public IInput {
+ public:
+  MOCK_METHOD(int, getChoice, (), (override));
 };
