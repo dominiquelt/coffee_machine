@@ -7,7 +7,7 @@ class MilkCoffee : public IBrewingStrategy {
  public:
   ~MilkCoffee() = default;
 
-  bool brew(int& water, int& beans, int& milk) override;
+  std::unique_ptr<ICoffee> brew(int& water, int& beans, int& milk) override;
 
  private:
   const int WATER_NEEDED = 30;

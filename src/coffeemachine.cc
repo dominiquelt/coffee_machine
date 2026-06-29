@@ -11,9 +11,9 @@ void CoffeeMachine::SetStrategy(std::unique_ptr<IBrewingStrategy> strategy) {
   strategy_ = std::move(strategy);
 }
 
-bool CoffeeMachine::MakeCoffee() {
+std::unique_ptr<ICoffee> CoffeeMachine::MakeCoffee() {
   if (!strategy_) {
-    return false;
+    return nullptr;
   }
   return strategy_->brew(CurrentWater, CurrentBeans, CurrentMilk);
 }

@@ -12,11 +12,11 @@ class CoffeeMachine : public ICoffeeMachine {
   CoffeeMachine();
   ~CoffeeMachine();
 
-  bool MakeCoffee() override;
+  std::unique_ptr<ICoffee> MakeCoffee() override;
   void RefillWater() override;
   void RefillBeans() override;
   void RefillMilk() override;
-  void SetStrategy(std::unique_ptr<IBrewingStrategy> strategy);
+  void SetStrategy(std::unique_ptr<IBrewingStrategy> strategy) override;
 
   std::string getStatus() const override;
 
@@ -37,7 +37,3 @@ class CoffeeMachine : public ICoffeeMachine {
 };
 
 #endif
-
-// crt water -crt beans nie jako wskazniki tylko normalna kopia, bo int jest tak
-// samo duzy w pamieci jak wskaznik
-// bedziemy rozbijac ta klase i tak

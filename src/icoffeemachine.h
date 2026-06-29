@@ -4,13 +4,14 @@
 #include <memory>
 #include <string>
 
+#include "ICoffee.h"
 #include "IBrewingStrategy.h"
 
 class ICoffeeMachine {
  public:
   virtual ~ICoffeeMachine() = default;
 
-  virtual bool MakeCoffee() = 0;
+  virtual std::unique_ptr<ICoffee> MakeCoffee() = 0;
   virtual void RefillWater() = 0;
   virtual void RefillBeans() = 0;
   virtual void RefillMilk() = 0;

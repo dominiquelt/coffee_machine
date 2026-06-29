@@ -1,6 +1,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "CoffeeCups.h"
 #include "EspressoStrategy.h"
 #include "coffeemachine.h"
 #include "console.h"
@@ -21,21 +22,23 @@ class ConsoleTests : public ::testing::Test {
 
 TEST_F(ConsoleTests, MakeCoffeeCalledOnSuccessPath) {
   EXPECT_CALL(input_mock_, getChoice())
-      .WillOnce(Return(1))   //  make coffee
+      .WillOnce(Return(1))   // make coffee
       .WillOnce(Return(1))   // Espresso
+      .WillOnce(Return(4))   // Koniec (addons)
       .WillOnce(Return(0));  // exit
   EXPECT_CALL(machine_mock_, SetStrategy(_));
-  EXPECT_CALL(machine_mock_, MakeCoffee()).WillOnce(Return(true));
+  EXPECT_CALL(machine_mock_, MakeCoffee())
+      .WillOnce([]() { return std::make_unique<EspressoCup>(); });
   console_->run();
 }
 
 TEST_F(ConsoleTests, MakeCoffeeCalledOnFailurePath) {
   EXPECT_CALL(input_mock_, getChoice())
-      .WillOnce(Return(1))   //  make coffee
-      .WillOnce(Return(1))   //  Espresso
+      .WillOnce(Return(1))   // make coffee
+      .WillOnce(Return(1))   // Espresso
       .WillOnce(Return(0));  // exit
   EXPECT_CALL(machine_mock_, SetStrategy(_));
-  EXPECT_CALL(machine_mock_, MakeCoffee()).WillOnce(Return(false));
+  EXPECT_CALL(machine_mock_, MakeCoffee()).WillOnce([]() { return nullptr; });
   console_->run();
 }
 
@@ -63,8 +66,8 @@ class CoffeeMachineTests : public ::testing::Test {
   CoffeeMachine machine_;
 };
 
-TEST_F(CoffeeMachineTests, MakeCoffeeReturnsFalseWithNoStrategy) {
-  EXPECT_FALSE(machine_.MakeCoffee());
+TEST_F(CoffeeMachineTests, MakeCoffeeReturnsNullptrWithNoStrategy) {
+  EXPECT_EQ(machine_.MakeCoffee(), nullptr);
 }
 
 TEST_F(CoffeeMachineTests, EspressoReducesWaterAndBeans) {

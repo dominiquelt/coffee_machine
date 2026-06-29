@@ -2,12 +2,14 @@
 
 #include <iostream>
 
-bool Espresso::brew(int& water, int& beans, int& milk) {
+#include "CoffeeCups.h"
+
+std::unique_ptr<ICoffee> Espresso::brew(int& water, int& beans, int& milk) {
   if (water < WATER_NEEDED || beans < BEANS_NEEDED) {
-    return false;
+    return nullptr;
   }
   std::cout << "Parzę Espresso ...\n";
   water -= WATER_NEEDED;
   beans -= BEANS_NEEDED;
-  return true;
+  return std::make_unique<EspressoCup>();
 }

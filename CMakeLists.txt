@@ -26,6 +26,7 @@ add_library(GameLib
     src/EspressoStrategy.cc
     src/FilteredCoffeeStrategy.cc
     src/MilkCoffeeStrategy.cc
+    src/EspressoDippoStrategy.cc
 )
 
 target_include_directories(GameLib PUBLIC src)

@@ -3,9 +3,12 @@
 #include <iostream>
 #include <memory>
 
+#include "EspressoDippoStrategy.h"
 #include "EspressoStrategy.h"
 #include "FilteredCoffeeStrategy.h"
-#include "MilkCoffeeStrategy.h"
+#include "MilkDecorator.h"
+#include "SugarDecorator.h"
+#include "SyrupDecorator.h"
 
 Console::Console(ICoffeeMachine* machine, IInput* input)
     : machine_(machine), input_(input) {}
@@ -20,10 +23,39 @@ void Console::PrintOptions() const {
             << "Wybor: ";
 }
 
+std::unique_ptr<ICoffee> Console::SelectAddons(std::unique_ptr<ICoffee> coffee) {
+  int choice = -1;
+  while (choice != 4) {
+    std::cout << "\n[1] Mleko\n"
+              << "[2] Cukier\n"
+              << "[3] Syrop\n"
+              << "[4] Koniec\n"
+              << "Wybor: ";
+    choice = input_->getChoice();
+    switch (choice) {
+      case 1:
+        coffee = std::make_unique<MilkDecorator>(std::move(coffee));
+        break;
+      case 2:
+        coffee = std::make_unique<SugarDecorator>(std::move(coffee));
+        break;
+      case 3:
+        coffee = std::make_unique<SyrupDecorator>(std::move(coffee));
+        break;
+      case 4:
+        break;
+      default:
+        std::cout << "Nieznana opcja.\n";
+        break;
+    }
+  }
+  return coffee;
+}
+
 void Console::SelectCoffee() {
   std::cout << "\n[1] Espresso\n"
             << "[2] Filtered Coffee\n"
-            << "[3] Milk Coffee\n"
+            << "[3] Espresso Dippo\n"
             << "Wybor: ";
   int choice = input_->getChoice();
   switch (choice) {
@@ -34,17 +66,21 @@ void Console::SelectCoffee() {
       machine_->SetStrategy(std::make_unique<Filtered>());
       break;
     case 3:
-      machine_->SetStrategy(std::make_unique<MilkCoffee>());
+      machine_->SetStrategy(std::make_unique<EspressoDippo>());
       break;
     default:
       std::cout << "Nieznana opcja.\n";
       return;
   }
-  if (machine_->MakeCoffee()) {
-    std::cout << "Kawa gotowa!\n";
-  } else {
+
+  auto coffee = machine_->MakeCoffee();
+  if (!coffee) {
     std::cout << "Blad: Za malo zasobow!\n";
+    return;
   }
+
+  coffee = SelectAddons(std::move(coffee));
+  std::cout << "Kawa gotowa: " << coffee->getIngredients() << "\n";
 }
 
 void Console::ProcessChoice(int choice) {
@@ -76,12 +112,8 @@ void Console::run() {
   int choice = -1;
 
   while (choice != 0) {
+    PrintOptions();
     choice = input_->getChoice();
     ProcessChoice(choice);
   }
 }
-
-// tworzysz mala klase do mockowania, ktora zawola metoda ktora zawola std::cin
-// linia 58 std::cin choice i zwroci choice process choice bedzie prywatne w
-// testach do konsoli uzywam tylko run, ale dla obiektoru ktory zwroci choice
-// napisac moca
